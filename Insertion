@@ -1,0 +1,138 @@
+//Singly Linked List Insertion
+#include<stdio.h>
+#include<stdlib.h>
+struct Node{
+	int data;
+	struct Node *next;
+};
+//To create a Node 
+struct Node* Create_a_Node(int val)
+{
+	// Assign space using malloc for new node
+	struct Node *new_node=(struct Node*)malloc(sizeof(struct Node));
+	new_node->data=val; //insert(assign) value to newnode data
+	new_node->next=NULL; // initially the node doesnot link to other
+	return new_node;
+}
+struct Node *head=NULL,*tail=NULL;//initially head and tail are Null
+//Insert function to link the node to linked list and used to create a list
+void Insert(int val)
+{
+	struct Node *nn=Create_a_Node(val);//By using given value create a Node
+	if(head==NULL)
+	{
+		head=nn;
+		tail=nn;
+		//initially head and tail at 1st position
+	}
+	else
+	{
+		tail->next=nn;
+		//tail=nn;
+		tail=tail->next;
+	}
+}
+void Insert_at_head(int val)
+{
+	struct Node *nn=Create_a_Node(val);
+	//if head is null then the give node is the head
+	if(head==NULL) head=nn;
+	//if head not equal to Null then newnode is link to head then head changes to nn;
+	else
+	{
+		struct Node *temp=head;
+		nn->next=temp;
+		head=nn;
+		
+	}
+}
+void Insert_at_end(int val)
+{
+	struct Node *nn=Create_a_Node(val);
+	//if head is NULL then nn is 1st and last position
+	if(head==NULL) head=nn;
+	//run the loop upto last element and link newnode to last element
+	else
+	{
+		struct Node *temp=head;
+		while(temp->next!=NULL)
+		{
+			temp=temp->next;
+		}
+		temp->next=nn;
+	}
+}
+void Insert_at_position(int val , int pos)
+{
+	struct Node *nn=Create_a_Node(val);
+	struct Node *temp=head;
+	// if head null and given position is at 1st place
+	if(head==NULL)
+	{
+		if(pos==1) head=nn;
+		else return ;
+	} 
+	//
+	else if(pos==1)
+	{
+		nn->next=temp;
+		head=nn;
+	}
+	else
+	{
+		int cnt=0;
+		while(cnt<pos-1&&temp)
+		{
+			cnt++;
+			temp=temp->next;
+		}
+		if(temp==NULL) return ;
+		else
+		{
+			struct Node *p1=temp;
+			struct Node *p2=temp->next;
+			p1->next=nn;
+			nn->next=p2;
+		}
+	}
+}
+
+void Display()
+{
+	struct Node *temp=head;
+	while(temp)
+	{
+		printf("%d ",temp->data);
+		temp=temp->next;
+	}
+	printf("\n");
+}
+
+int main()
+{
+	int n;//numbers of nodes in a list
+	printf("Enter number of nodes in a linkedlist : ");
+	scanf("%d",&n);
+	for(int i=0;i<n;i++)
+	{
+		int val;
+		scanf("%d",&val);
+		Insert(val);
+	}
+	Display();
+	int x;
+	printf("Enter the value for insert at head : ");
+	scanf("%d",&x);
+	Insert_at_head(x);
+	Display();
+	int y;
+	printf("Enter the value for insert at tail : ");
+	scanf("%d",&y);
+	Insert_at_end(y);
+	Display();
+	int z,pos;
+	printf("Enter value and pos for insert a node : ");
+	scanf("%d%d",&z,&pos);
+	Insert_at_position(z,pos);
+	Display();
+}
