@@ -1,1 +1,118 @@
 // Deletion of singly Linked list
+#include<stdio.h>
+#include<stdlib.h>
+struct Node{
+	int data;
+	struct Node *next;
+};
+//To create a Node 
+struct Node* Create_a_Node(int val)
+{
+	// Assign space using malloc for new node
+	struct Node *new_node=(struct Node*)malloc(sizeof(struct Node));
+	new_node->data=val; //insert(assign) value to newnode data
+	new_node->next=NULL; // initially the node doesnot link to other
+	return new_node;
+}
+struct Node *head=NULL,*tail=NULL;//initially head and tail are Null
+//Insert function to link the node to linked list and used to create a list
+void Insert(int val)
+{
+	struct Node *nn=Create_a_Node(val);//By using given value create a Node
+	if(head==NULL)
+	{
+		head=nn;
+		tail=nn;
+		//initially head and tail at 1st position
+	}
+	else
+	{
+		tail->next=nn;
+		//tail=nn;
+		tail=tail->next;
+	}
+}
+//To delete a node at head
+void Delete_at_head()
+{
+	if(head==NULL) return ;
+	else
+	{
+		struct Node *temp = head;
+		head = head->next;
+		free(temp);
+	}
+}
+void Delete_at_tail()
+{
+	if(head==NULL) return ;
+	if(head->next==NULL) 
+	{
+		free(head);
+		return ;
+	}
+	else
+	{
+		struct Node *temp = head;
+		while(temp->next->next!=NULL)
+		{
+			temp = temp->next;
+		}
+		free(temp->next);
+		temp->next=NULL;
+	}
+}
+//To delete a node in middle
+void delete_at_pos(int pos)
+{
+	int cnt=0;
+	struct Node *temp=head;
+	struct Node *prev;
+	while(temp&&cnt<pos-1)
+	{
+		prev=temp;
+		cnt++;
+		temp=temp->next;
+	}
+	if(temp==NULL)
+	{
+		printf("position not found\n");
+	}
+	prev->next=temp->next;
+	
+}
+void Display()
+{
+	struct Node *temp=head;
+	while(temp)
+	{
+		printf("%d ",temp->data);
+		temp=temp->next;
+	}
+	printf("\n");
+}
+
+int main()
+{
+	int n;//numbers of nodes in a list
+	printf("Enter number of nodes in a linkedlist : ");
+	scanf("%d",&n);
+	for(int i=0;i<n;i++)
+	{
+		int val;
+		scanf("%d",&val);
+		Insert(val);
+	}
+	Display();
+	Delete_at_head();
+	printf("After delete head node: ");
+	Display();
+	Delete_at_tail();
+	printf("After Deleting tail node : ");
+	Display();
+	int pos;
+	printf("Enter pos for delete a node : ");
+	scanf("%d",&pos);
+	delete_at_pos(pos);
+	Display();
+}
