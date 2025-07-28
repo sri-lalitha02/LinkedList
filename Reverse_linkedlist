@@ -1,0 +1,80 @@
+// Reverse Linked List
+#include<stdio.h>
+#include<stdlib.h>
+struct Node{
+	int data;
+	struct Node *next;	
+};
+struct Node *head,*tail;
+// for creating a node
+struct Node* create_A_Node(int val)
+{
+	struct Node *newnode;
+	newnode=(struct Node*)malloc(sizeof(struct Node));
+	newnode->data=val;
+	newnode->next=NULL;
+	return newnode;
+}
+// Insert elements in linked list
+void Insert_to_linkedlist(int val)
+{
+	if(head==NULL)
+	{
+		head=create_A_Node(val);
+		tail=head;
+	}
+    else
+	{
+		tail->next= create_A_Node(val);
+		tail=tail->next;
+	}
+}
+// To reverse a Linked list
+struct Node *reverse(struct Node *head)
+{
+	struct Node *curr=head,*prev = NULL,*next;
+	if(head==NULL) return NULL;
+	// 1. create a next node for storing current node next node
+	// 2. current node is said to prev (initially which is null) i.e curr node said to null
+	// 3. After link the 1st element to prev , prev moves the 1st element (curr element)
+	// 4. and the current node moves to next node
+	// 5. repeat the process until current reached to null
+	while(curr!=NULL)
+	{
+		next = curr->next;
+		curr->next = prev;
+		prev = curr;
+		curr = next;
+	}
+	// 6. Finnaly , In previous list the elements are stored in reverse order
+	// 7. The curr linked list is deleted 
+	return prev;
+}
+void Display()
+{
+	struct Node *temp=head;
+	while(temp)
+	{
+		printf("%d ",temp->data);
+		temp=temp->next;
+	}
+	printf("\n");
+}
+int main()
+{
+	int n;
+	printf("Enter no of nodes in a linked list:");
+	scanf("%d",&n);           //no of nodes we will get.
+	printf("Enter nodes in a linked list:");
+	for(int i=0;i<n;i++)
+	{
+		int val;
+		scanf("%d",&val);
+		Insert_to_linkedlist(val);
+	}
+	printf("Before reverse\n");
+	Display();	
+	head = reverse(head);
+	printf("After Reverse\n");
+	Display();
+}
